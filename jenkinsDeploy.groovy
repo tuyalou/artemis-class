@@ -6,3 +6,10 @@ properties([
         choice(choices: ['dev', 'qa', 'stage', 'prod'], description: 'Please select an environment to deploy', name: 'environment')
         ])
     ])
+
+println("""
+Terraform apply: ${params.terrafromApply}
+Selected env: ${params.environment}
+""")
+
+println('Hello World')
