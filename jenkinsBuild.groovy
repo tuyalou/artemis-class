@@ -38,7 +38,7 @@ def slavePodTemplate = """
     def environment = ""
     def branch          = "${scm.branches[0].name}".replaceAll(/^\*\//, '').replace("/", "-").toLowerCase()
 
-    if (branch == master ) {
+    if (branch == "master" ) {
        environment = "prod"
     }
 
