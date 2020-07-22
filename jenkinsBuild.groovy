@@ -40,7 +40,7 @@ def slavePodTemplate = """
 
     if (branch == "master") {
       environment = "prod"
-    } else if (branch.contains'dev-feature')) {
+    } else if (branch.contains('dev-feature')) {
       environment = "dev"
     } else if (branch.contains('qa-feature')) {
       environment = "qa"
