@@ -55,16 +55,6 @@ def slavePodTemplate = """
               path: /var/run/docker.sock
     """
 
-    properties([
-        parameters([
-            booleanParam(defaultValue: false, description: 'Please select to apply the changes ', name: 'terraformApply'),
-            booleanParam(defaultValue: false, description: 'Please select to destroy all ', name: 'terraformDestroy'), 
-            choice(choices: ['us-west-2', 'us-west-1', 'us-east-2', 'us-east-1', 'eu-west-1'], description: 'Please select the region', name: 'aws_region'),
-            choice(choices: ['dev', 'qa', 'stage', 'prod'], description: 'Please select the environment to deploy.', name: 'environment'),
-            string(defaultValue: 'None', description: 'Please provide the docker image', name: 'docker_image', trim: true)
-        ])
-    ])
-
 
     podTemplate(name: k8slabel, label: k8slabel, yaml: slavePodTemplate, showRawYaml: false) {
       node(k8slabel) {
