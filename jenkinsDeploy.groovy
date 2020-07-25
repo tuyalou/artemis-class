@@ -8,7 +8,6 @@ properties([
         ])
     ])
 def k8slabel = "jenkins-pipeline-${UUID.randomUUID().toString()}"
-
 def slavePodTemplate = """
       metadata:
         labels:
@@ -54,18 +53,13 @@ def slavePodTemplate = """
             hostPath:
               path: /var/run/docker.sock
     """
-
-
     podTemplate(name: k8slabel, label: k8slabel, yaml: slavePodTemplate, showRawYaml: false) {
       node(k8slabel) {
-          
         stage("Pull SCM") {
-            git 'https://github.com/tuyalou/artemis-class.git'
+            git 'https://github.com/fuchicorp/artemis-class.git'
         }
-
         stage("Generate Variables") {
           dir('deployments/terraform') {
-
             println("Generate Variables")
             def deployment_configuration_tfvars = """
             environment = "${environment}"
@@ -73,10 +67,9 @@ def slavePodTemplate = """
             """.stripIndent()
             writeFile file: 'deployment_configuration.tfvars', text: "${deployment_configuration_tfvars}"
             sh 'cat deployment_configuration.tfvars >> dev.tfvars'
-
+            sh 'sh /scripts/Dockerfile/set-config.sh'
           }   
         }
-
         container("buildtools") {
             dir('deployments/terraform') {
                 withCredentials([usernamePassword(credentialsId: "aws-access-${environment}", 
@@ -88,21 +81,20 @@ def slavePodTemplate = """
                                 println("Applying the changes")
                                 sh """
                                 #!/bin/bash
-                                terraform init
-                                terraform apply -auto-approve 
+                                terraform init 
+                                terraform apply -auto-approve
                                 """
                             } else {
                                 println("Planing the changes")
                                 sh """
                                 #!/bin/bash
                                 set +ex
-                                terraform init
-                                terraform plan 
+                                terraform init 
+                                terraform plan
                                 """
                             }
                         }
                     }
-
                     stage("Terraform Destroy") {
                         if (params.terraformDestroy) {
                             println("Destroying the all")
@@ -116,7 +108,6 @@ def slavePodTemplate = """
                         }
                     }
                 }
-
             }
         }
       }
