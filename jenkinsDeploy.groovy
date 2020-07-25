@@ -45,7 +45,7 @@ def slavePodTemplate = """
           volumeMounts:
             - mountPath: /var/run/docker.sock
               name: docker-sock
-        serviceAccountName: default
+        serviceAccountName: common-jenkins
         securityContext:
           runAsUser: 0
           fsGroup: 0
