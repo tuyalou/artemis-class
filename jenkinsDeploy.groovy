@@ -117,24 +117,3 @@ def slavePodTemplate = """
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Message feb_devops_2020
-
