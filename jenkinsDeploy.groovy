@@ -57,7 +57,7 @@ def slavePodTemplate = """
     podTemplate(name: k8slabel, label: k8slabel, yaml: slavePodTemplate, showRawYaml: false) {
       node(k8slabel) {
         stage("Pull SCM") {
-            git 'https://github.com/fuchicorp/artemis-class.git'
+            git 'https://github.com/tuyalou/artemis-class.git'
         }
         stage("Generate Variables") {
           dir('deployments/terraform') {
