@@ -5,6 +5,7 @@ then
    echo "e.g. source ./setenv configurations/data-rnd-us-vet1-v1"
    return 1
 fi
+
 if [ -z "$1" ]
 then
    echo "setenv: You must provide the name of the configuration file."
@@ -30,11 +31,14 @@ then
    echo "setenv: 'environment' variable not set in configuration file."
    return 1
 fi
+
 if [ -z "$S3BUCKET" ]
 then
    echo "setenv: 's3_bucket' variable not set in configuration file."
    return 1
 fi
+
+
 if [ -z "$S3BUCKETPROJ" ]
 then
   echo "setenv: 's3_folder_project' variable not set in configuration file."
@@ -45,6 +49,7 @@ then
    echo "setenv: 's3_folder_region' variable not set in configuration file."
    return 1
 fi
+
 if [ -z "$S3BUCKETTYPE" ]
 then
    echo "setenv: 's3_folder_type' variable not set in configuration file."
@@ -56,6 +61,7 @@ then
    echo "e.g. s3_tfstate_file=\"infrastructure.tfstate\""
 return 1
 fi
+
 cat << EOF > "$DIR/backend.tf"
 terraform {
     backend "s3" {
@@ -66,4 +72,4 @@ terraform {
 }
 EOF
 cat backend.tf
-terraform init 
+terraform init
