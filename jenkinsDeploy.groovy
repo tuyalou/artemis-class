@@ -8,7 +8,10 @@ properties([
         string(defaultValue: 'None', description: 'Please provide the docker image', name: 'docker_image', trim: true)
         ])
     ])
+
+
 def k8slabel = "jenkins-pipeline-${UUID.randomUUID().toString()}"
+
 def slavePodTemplate = """
       metadata:
         labels:
@@ -54,22 +57,29 @@ def slavePodTemplate = """
             hostPath:
               path: /var/run/docker.sock
     """
+
     podTemplate(name: k8slabel, label: k8slabel, yaml: slavePodTemplate, showRawYaml: false) {
       node(k8slabel) {
+
         stage("Pull SCM") {
             git 'https://github.com/tuyalou/artemis-class.git'
         }
+
         stage("Generate Variables") {
           dir('deployments/terraform') {
+
             println("Generate Variables")
             def deployment_configuration_tfvars = """
             environment = "${environment}"
             deployment_image = "${docker_image}"
             """.stripIndent()
-            writeFile file: 'deployment_configuration.tfvars', text: "${deployment_configuration_tfvars}"
+            writeFile file: 'deployment_configuration.tfvars', text: "${deployment_configuration_tfvars}" 
             sh 'cat deployment_configuration.tfvars >> dev.tfvars'
+            sh 'sh /scripts/Dockerfile/set-config.sh'
+          
           }   
         }
+
         container("buildtools") {
             dir('deployments/terraform') {
                 withCredentials([usernamePassword(credentialsId: "aws-access-${environment}", 
