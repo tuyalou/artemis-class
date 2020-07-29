@@ -1,4 +1,4 @@
-s3_bucket = "jenkins-instance-regional2"
+##s3_bucket = "jenkins-instance-tuyalou"
 s3_folder_project = "artemis"
 ##s3_folder_region = "us-east-1"
 s3_folder_type = "class"
