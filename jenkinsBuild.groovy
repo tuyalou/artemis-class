@@ -37,7 +37,6 @@ def slavePodTemplate = """
     """
     def environment = ""
     def docker_image = ""
-    def aws_region = ""
     def branch          = "${scm.branches[0].name}".replaceAll(/^\*\//, '').replace("/", "-").toLowerCase()
 
     docker_image = "tuyalou/artemis:${branch.replace('version/', 'v')}"
@@ -74,8 +73,7 @@ def slavePodTemplate = """
                   parameters: [
                       [$class: 'BooleanParameterValue', name: 'terraformApply',     value: true],
                       [$class: 'StringParameterValue',  name: 'environment',         value: "${environment}"],
-                      [$class: 'StringParameterValue',  name: 'docker_image',         value: "${docker_image}"],
-                      [$class: 'StringParameterValue',  name: 'aws_region',         value: "${aws_region}"]
+                      [$class: 'StringParameterValue',  name: 'docker_image',         value: "${docker_image}"]
                       ]
                 }
             }
