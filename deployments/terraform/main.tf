@@ -11,6 +11,7 @@ module "artemis-deploy" {
   }
 }
   
+##If there are no default values for defined variables, terraform now ends up with an error  
 variable "aws_region" {
   default = "us-east-1"
 }
