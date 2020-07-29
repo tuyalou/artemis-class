@@ -72,6 +72,7 @@ def slavePodTemplate = """
             def deployment_configuration_tfvars = """
             environment = "${environment}"
             deployment_image = "${docker_image}"
+            s3_bucket = "jenkins-artemis--${aws_region}"
             s3_folder_region = "${aws_region}"
             """.stripIndent()
             writeFile file: 'deployment_configuration.tfvars', text: "${deployment_configuration_tfvars}" 
